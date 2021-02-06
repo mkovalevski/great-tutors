@@ -168,4 +168,6 @@ def not_found(error):
     return "Not Found", 404
 
 
-app.run('localhost', port=8000, debug=True)
+# app.run('localhost', port=8000, debug=True)
+if __name__ == '__main__':
+    app.run()
