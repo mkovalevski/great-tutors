@@ -1,0 +1,35 @@
+{% extends "base2.html" %}
+{% block container %}
+  <main class="container mt-3">
+    <div class="row mt-5">
+      <div class="col-10 col-md-6 offset-1 offset-md-3 mb-3">
+        <form action="/booking_done/{{ tutors[id].name }}/{{ day }}/{{ time }}"  class="card mb-3" method="POST">
+          <div class="card-body text-center pt-5">
+            <img src="{{ tutors[id].picture }}" class="mb-3" width="95" alt="">
+            <h2 class="h5 card-title mt-2 mb-2">{{ tutors[id].name }}</h2>
+            <p class="my-1">Запись на пробный урок</p>
+            <p class="my-1">{{ day }}, {{ time }}</p>
+          </div>
+          <hr />
+          <div class="card-body mx-3">
+              <div class="row">
+                  <input class="form-control" type="hidden" name="clientWeekday" value="mon">
+                  <input class="form-control" type="hidden" name="clientTime" value="12:00">
+                  <input class="form-control" type="hidden" name="clientTeacher" value="10">
+              </div>
+
+            {{ booking_form.name.label(class="control-label mb-1 mt-2", text='Ваше имя') }}
+            {{ booking_form.name(class="form-control") }}
+            {{ booking_form.csrf_token() }}
+
+            {{ booking_form.phone.label(class="control-label mb-1 mt-2", text='Ваш телефон') }}
+            {{ booking_form.phone(class="form-control") }}
+
+            <input type="submit" class="btn btn-primary btn-block mt-4" value="Записаться на пробный урок">
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+{% endblock %}

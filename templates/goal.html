@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block container %}
+  <main class="container mt-3">
+    <h1 class="h1 text-center w-50 mx-auto mt-1 py-5 mb-4"><strong>{{ emoji[goal] }}<br />Преподаватели <br> {{ goals[goal]|lower }}</strong></h1>
+    {% for tutor in tutors | sort(attribute="rating") %}
+      <div class="row">
+      <div class="col-12 col-lg-10 offset-lg-1 m-auto">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-3"><img src="{{ tutors[tutor].picture }}" class="img-fluid" alt=""></div>
+              <div class="col-9">
+                <p class="float-right">Рейтинг: {{ tutors[tutor].rating }} Ставка: {{ tutors[tutor].price }} / час</p>
+                <h2 class="h4">{{ tutors[tutor].name }}</h2>
+                <p>{{ tutors[tutor].about }}</p>
+                <a href="/profiles/{{ tutor }}" class="btn btn-outline-primary btn-sm mr-3 mb-2">Показать информацию и расписание</a>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    {% endfor %}
+  </main>
+{% endblock %}
