@@ -15,13 +15,9 @@
             <p class="lead float-left d-inline-block mt-2 mb-0"><strong>{{ amount }} преподавателей в базе</strong></p>
 
             <form class="float-right d-inline-block" action="/all/sort/" method="post">
+                {{ form.csrf_token }}
               <div class="form-inline">
-                <select class="custom-select my-1 mr-2" id="inlineFormCustomSelectPref">
-                  <option selected>В случайном порядке</option>
-                  <option value="3">Сначала лучшие по рейтингу</option>
-                  <option value="1">Сначала дорогие</option>
-                  <option value="2">Сначала недорогие</option>
-                </select>
+                  {{ form.sort(class="custom-select my-1 mr-2") }}
                 <button type="submit" class="btn btn-primary my-1">Сортировать</button>
               </div>
             </form>

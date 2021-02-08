@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, RadioField
+from wtforms import StringField, RadioField, SelectField
 from wtforms.validators import InputRequired
 
 
@@ -19,3 +19,10 @@ class RequestForm(FlaskForm):
                                                  ("7-10", "7-10 часов в неделю")], default='1-2')
     name = StringField('name', [InputRequired()])
     phone = StringField('phone', [InputRequired()])
+
+
+class SortForm(FlaskForm):
+    sort = SelectField('select', choices=[('1', 'В случайном порядке'),
+                                          ('2', 'Сначала лучший рейтинг'),
+                                          ('3', 'Сначала дорогие'),
+                                          ('4', 'Сначала недорогие')])

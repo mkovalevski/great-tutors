@@ -2,9 +2,9 @@ import os
 import dataIntoJSON
 import json
 from flask import Flask, render_template, request
-from forms import BookingForm, RequestForm
+from forms import BookingForm, RequestForm, SortForm
 from flask_wtf.csrf import CSRFProtect
-from random import randint
+from random import randint, shuffle
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
@@ -78,6 +78,7 @@ def index():
     random_tutors = {}
     b = 7
     i = 0
+    # 6 случайных преподавателей без повторений
     while i <= b:
         if len(rand) == 6:
             break
@@ -92,16 +93,28 @@ def index():
     return render_template('index.html', tutors=random_tutors)
 
 
-@app.route('/all/')
+@app.route('/all/',  methods=['GET', 'POST'])
 def tutors():
     tutors = make_new_dict_tutors(data)
-    return render_template('all.html', tutors=tutors, amount=len(tutors))
+    shuffle(tutors)
+    form = SortForm()
+    return render_template('all.html', tutors=tutors, amount=len(tutors), form=form)
 
 
-@app.route('/all/sort/', methods=['POST'])
+@app.route('/all/sort/', methods=['GET', 'POST'])
 def sort():
-    tutors = make_new_dict_tutors(data)
-    return render_template('all_sort.html', tutors=tutors, amount=len(tutors))
+    sort_ids = {
+        "1": "random",
+        "2": ["rating", True],
+        "3": ["price", True],
+        "4": ["price", False],
+    }
+    form = SortForm()
+    sort_id = form.data['sort']
+    sort_attribute = sort_ids[str(sort_id)]
+    shuffle(data['teachers'])
+    return render_template('all_sort.html', tutors=data['teachers'], amount=len(data['teachers']),
+                           form=form, atrs=sort_attribute)
 
 
 @app.route('/goals/<goal>/')

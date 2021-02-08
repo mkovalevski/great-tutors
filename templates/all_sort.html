@@ -15,37 +15,48 @@
             <p class="lead float-left d-inline-block mt-2 mb-0"><strong>{{ amount }} преподавателей в базе</strong></p>
 
             <form class="float-right d-inline-block" action="/all/sort/" method="POST">
-              <div class="form-inline">
                 {{ form.csrf_token }}
-                <select class="custom-select my-1 mr-2" id="inlineFormCustomSelectPref" name="select">
-                  <option selected value="4">В случайном порядке</option>
-                  <option value="3">Сначала лучшие по рейтингу</option>
-                  <option value="1">Сначала дорогие</option>
-                  <option value="2">Сначала недорогие</option>
-                </select>
+              <div class="form-inline">
+                  {{ form.sort(class="custom-select my-1 mr-2") }}
                 <button type="submit" class="btn btn-primary my-1">Сортировать</button>
               </div>
             </form>
           </div>
         </div>
-
-        {% for tutor in tutors %}
+      {% if atrs != "random" %}
+        {% for tutor in tutors | sort(attribute=atrs[0], reverse=atrs[1]) %}
         <div class="card mb-4">
           <div class="card-body">
             <div class="row">
-              <div class="col-3"><img src="{{ tutors[tutor].picture }}" class="img-fluid" alt=""></div>
+              <div class="col-3"><img src="{{ tutor.picture }}" class="img-fluid" alt=""></div>
               <div class="col-9">
-                <p class="float-right">Рейтинг: {{ tutors[tutor].rating }} Ставка: {{ tutors[tutor].price }} / час</p>
-                <h2 class="h4">{{ tutors[tutor].name }}</h2>
-                <p>{{ tutors[tutor].about }}</p>
-                <a href="/profiles/{{ tutor }}" class="btn btn-outline-primary btn-sm mr-3 mb-2">Показать информацию и расписание</a>
-
+                <p class="float-right">Рейтинг: {{ tutor.rating }} Ставка: {{ tutor.price }} / час</p>
+                <h2 class="h4">{{ tutor.name }}</h2>
+                <p>{{ tutor.about }}</p>
+                <a href="/profiles/{{ tutor.id }}" class="btn btn-outline-primary btn-sm mr-3 mb-2">Показать информацию и расписание</a>
               </div>
             </div>
           </div>
           {% endfor %}
+        {% else %}
+        {% for tutor in tutors %}
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-3"><img src="{{ tutor.picture }}" class="img-fluid" alt=""></div>
+              <div class="col-9">
+                <p class="float-right">Рейтинг: {{ tutor.rating }} Ставка: {{ tutor.price }} / час</p>
+                <h2 class="h4">{{ tutor.name }}</h2>
+                <p>{{ tutor.about }}</p>
+                <a href="/profiles/{{ tutor.id }}" class="btn btn-outline-primary btn-sm mr-3 mb-2">Показать информацию и расписание</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+      {% endif %}
         </div>
       </div>
     </div>
+      </div>
   </main>
 {% endblock %}
