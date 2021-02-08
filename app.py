@@ -10,7 +10,7 @@ app = Flask(__name__)
 csrf = CSRFProtect(app)
 
 SECRET_KEY = os.urandom(43)
-app.config['SECRET_KEY'] = SECRET_KEY
+app.config['SECRET_KEY'] = 'secret_sauce'
 
 data = dataIntoJSON.contents
 week = {'mon': 'Понедельник',
