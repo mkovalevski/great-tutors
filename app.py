@@ -105,17 +105,17 @@ def tutors():
 @app.route('/all/sort/', methods=['GET', 'POST'])
 def sort():
     sort_ids = {
-        1: "random",
-        2: ["rating", True],
-        3: ["price", True],
-        4: ["price", False],
+        '1': 'random',
+        '2': ['rating', True],
+        '3': ['price', True],
+        '4': ['price', False],
     }
     form = SortForm()
     sort_id = form.data['sort']
     sort_attribute = sort_ids[sort_id]
     shuffle(data['teachers'])
     return render_template('all_sort.html', tutors=data['teachers'], amount=len(data['teachers']),
-                           form=form, atrs=sort_attribute)
+                           form=form, sort_attribute=sort_attribute)
 
 
 @app.route('/goals/<goal>/')
@@ -143,7 +143,7 @@ def request():
     return render_template('request.html', request_form=request_form)
 
 
-@app.route('/request_done', methods=['POST'])
+@app.route('/request_done/', methods=['POST'])
 def request_done():
     request_form = RequestForm()
     name = request_form.name.data
@@ -163,7 +163,7 @@ def book(id, day, time):
                            booking_form=booking_form)
 
 
-@app.route('/booking_done/<tutor>/<day>/<time>', methods=['POST'])
+@app.route('/booking_done/<tutor>/<day>/<time>/', methods=['POST'])
 def booking_done(tutor, day, time):
     booking_form = BookingForm()
     name = booking_form.name.data

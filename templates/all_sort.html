@@ -18,8 +18,8 @@
             </form>
           </div>
         </div>
-      {% if atrs != "random" %}
-        {% for tutor in tutors | sort(attribute=atrs[0], reverse=atrs[1]) %}
+      {% if sort_attribute != 'random' %}
+        {% for tutor in tutors | sort(attribute=sort_attribute[0], reverse=sort_attribute[1]) %}
         <div class="card mb-4">
           <div class="card-body">
             <div class="row">
