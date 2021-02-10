@@ -13,5 +13,3 @@ with open('data.json', 'r') as f:
 
 contents = loads(contents)
 # pprint.pprint(contents)
-
-

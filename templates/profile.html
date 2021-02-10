@@ -10,7 +10,7 @@
             <section class="teacher=info">
 
               <h1 class="h2">{{ tutors[id].name }}</h1>
-              <p>{% for key, goal in goals.items() %}<span class="badge badge-secondary mr-2"> {{ goal }}</span>{% endfor %}<br>Рейтинг: {{ tutors[id].rating }} Ставка: {{ tutors[id].price }} / час</p>
+              <p>{% for goal in goals.values() %}<span class="badge badge-primary mr-2"> {{ goal }}</span>{% endfor %}<br>Рейтинг: {{ tutors[id].rating }} Ставка: {{ tutors[id].price }} / час</p>
               <p>{{ tutors[id].about }}</p>
 
             </section>

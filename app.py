@@ -1,15 +1,16 @@
-import os
-import dataIntoJSON
 import json
-from flask import Flask, render_template, request
-from forms import BookingForm, RequestForm, SortForm
-from flask_wtf.csrf import CSRFProtect
 from random import randint, shuffle
+
+from flask import Flask, render_template
+from flask_wtf.csrf import CSRFProtect
+
+import dataIntoJSON
+from forms import BookingForm, RequestForm, SortForm
+
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
 
-SECRET_KEY = os.urandom(43)
 app.config['SECRET_KEY'] = 'secret_sauce'
 
 data = dataIntoJSON.contents
@@ -34,7 +35,7 @@ def make_new_dict_tutors(data):
 def count_busy_days(schedule):
     busy_days = {}
     for day, time in schedule.items():
-        for clock, isfree in time.items():
+        for isfree in time.values():
             if not isfree:
                 busy_days[day] = True
             else:
@@ -64,10 +65,10 @@ def add_record_request(file, name, phone, purpose, time):
 
 # создание словаря только с репетиторами с подходящей целью
 def is_goal_in_tutor(goal, tutors):
-    tutors_with_goal = {}
+    tutors_with_goal = []
     for tutor in tutors:
-        if goal in tutors[tutor]['goals']:
-            tutors_with_goal[tutor] = tutors[tutor]
+        if goal in tutor['goals']:
+            tutors_with_goal.append(tutor)
     return tutors_with_goal
 
 
@@ -104,14 +105,14 @@ def tutors():
 @app.route('/all/sort/', methods=['GET', 'POST'])
 def sort():
     sort_ids = {
-        "1": "random",
-        "2": ["rating", True],
-        "3": ["price", True],
-        "4": ["price", False],
+        1: "random",
+        2: ["rating", True],
+        3: ["price", True],
+        4: ["price", False],
     }
     form = SortForm()
     sort_id = form.data['sort']
-    sort_attribute = sort_ids[str(sort_id)]
+    sort_attribute = sort_ids[sort_id]
     shuffle(data['teachers'])
     return render_template('all_sort.html', tutors=data['teachers'], amount=len(data['teachers']),
                            form=form, atrs=sort_attribute)
@@ -119,19 +120,14 @@ def sort():
 
 @app.route('/goals/<goal>/')
 def goal(goal):
-    # tmp = []
-    tutors = make_new_dict_tutors(data)
     goals = data['goals']
     emoji = data['emoji']
-    tutors_with_goal = is_goal_in_tutor(goal, tutors)
-    # for i in tutors_with_goal.values():
-    #     tmp.append(i)
-    # print(tmp)
+    tutors_with_goal = is_goal_in_tutor(goal, data['teachers'])
     return render_template('goal.html', goal=goal, goals=goals, emoji=emoji,
                            tutors=tutors_with_goal)
 
 
-@app.route('/profiles/<int:id>')
+@app.route('/profiles/<int:id>/')
 def profile(id):
     tutors = make_new_dict_tutors(data)
     schedule = tutors[id]['free']
